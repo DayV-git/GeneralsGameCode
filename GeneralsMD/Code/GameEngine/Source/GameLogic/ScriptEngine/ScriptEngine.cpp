@@ -4134,6 +4134,18 @@ void ScriptEngine::init( void )
 	curTemplate->m_uiStrings[1] = " IS ";
 	curTemplate->m_uiStrings[2] = " ";
 
+	curTemplate = &m_conditionTemplates[Condition::COUNTER_COMPARE_COUNTER];
+	curTemplate->m_internalName = "COUNTER_COMPARE_COUNTER";
+	curTemplate->m_uiName = "Scripting/ Counter compared to another counter.";
+	curTemplate->m_numParameters = 3;
+	curTemplate->m_parameters[0] = Parameter::COUNTER;
+	curTemplate->m_parameters[1] = Parameter::COMPARISON;
+	curTemplate->m_parameters[2] = Parameter::COUNTER;
+	curTemplate->m_numUiStrings = 3;
+	curTemplate->m_uiStrings[0] = "Counter ";
+	curTemplate->m_uiStrings[1] = " IS ";
+	curTemplate->m_uiStrings[2] = " ";
+
 	curTemplate = &m_conditionTemplates[Condition::UNIT_HEALTH];
 	curTemplate->m_internalName = "UNIT_HEALTH";
 	curTemplate->m_uiName = "Unit_/ Unit health % compared to a value.";
@@ -6334,27 +6346,72 @@ Script  *ScriptEngine::findScript(const AsciiString& name)
 }
 
 //-------------------------------------------------------------------------------------------------
+/** Retrieves an existing counter index or allocates a new one if necessary, from script condtion. */
+//-------------------------------------------------------------------------------------------------
+Int ScriptEngine::getOrAllocateCounter(Condition *pCondition, int paramIndex)
+{
+	Int counterNdx = pCondition->getParameter(paramIndex)->getInt();
+	if (counterNdx == 0)
+	{
+		counterNdx = allocateCounter(pCondition->getParameter(paramIndex)->getString());
+		pCondition->getParameter(paramIndex)->friend_setInt(counterNdx);
+	}
+	return counterNdx;
+}
+
+//-------------------------------------------------------------------------------------------------
+/** Compares two values based on a given comparison operator. */
+//-------------------------------------------------------------------------------------------------
+Bool ScriptEngine::compareValues(Int left, Int right, Int comparisonOp)
+{
+	switch (comparisonOp)
+	{
+	case Parameter::LESS_THAN:
+		return left < right;
+	case Parameter::LESS_EQUAL:
+		return left <= right;
+	case Parameter::EQUAL:
+		return left == right;
+	case Parameter::GREATER_EQUAL:
+		return left >= right;
+	case Parameter::GREATER:
+		return left > right;
+	case Parameter::NOT_EQUAL:
+		return left != right;
+	default:
+		DEBUG_ASSERTCRASH(false, ("Invalid comparison operator.\n"));
+		return false;
+	}
+}
+
+//-------------------------------------------------------------------------------------------------
 /** Evaluates a counter condition */
 //-------------------------------------------------------------------------------------------------
-Bool ScriptEngine::evaluateCounter( Condition *pCondition )
+Bool ScriptEngine::evaluateCounter(Condition *pCondition)
 {
 	DEBUG_ASSERTCRASH(pCondition->getNumParameters() >= 3, ("Not enough parameters.\n"));
 	DEBUG_ASSERTCRASH(pCondition->getConditionType() == Condition::COUNTER, ("Wrong condition.\n"));
-	Int counterNdx = pCondition->getParameter(0)->getInt();
-	if (counterNdx == 0) {
-		counterNdx = allocateCounter(pCondition->getParameter(0)->getString());
-		pCondition->getParameter(0)->friend_setInt(counterNdx);
-	}
+
+	Int counterNdx = getOrAllocateCounter(pCondition, 0);
 	Int value = pCondition->getParameter(2)->getInt();
-	switch (pCondition->getParameter(1)->getInt()) {
-		case Parameter::LESS_THAN: return m_counters[counterNdx].value < value;
-		case Parameter::LESS_EQUAL: return m_counters[counterNdx].value <= value;
-		case Parameter::EQUAL: return m_counters[counterNdx].value == value;
-		case Parameter::GREATER_EQUAL: return m_counters[counterNdx].value >= value;
-		case Parameter::GREATER: return m_counters[counterNdx].value > value;
-		case Parameter::NOT_EQUAL: return m_counters[counterNdx].value != value;
-	}
-	return false;
+	Int comparisonOp = pCondition->getParameter(1)->getInt();
+
+	return compareValues(m_counters[counterNdx].value, value, comparisonOp);
+}
+
+//-------------------------------------------------------------------------------------------------
+/** Evaluates a counter v counter condition */
+//-------------------------------------------------------------------------------------------------
+Bool ScriptEngine::evaluateCounterPair(Condition *pCondition)
+{
+	DEBUG_ASSERTCRASH(pCondition->getNumParameters() >= 3, ("Not enough parameters.\n"));
+	DEBUG_ASSERTCRASH(pCondition->getConditionType() == Condition::COUNTER_COMPARE_COUNTER, ("Wrong condition.\n"));
+
+	Int counterNdx1 = getOrAllocateCounter(pCondition, 0);
+	Int counterNdx2 = getOrAllocateCounter(pCondition, 2);
+	Int comparisonOp = pCondition->getParameter(1)->getInt();
+
+	return compareValues(m_counters[counterNdx1].value, m_counters[counterNdx2].value, comparisonOp);
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -7063,8 +7120,12 @@ Bool ScriptEngine::evaluateCondition( Condition *pCondition )
 			return TheScriptConditions->evaluateCondition(pCondition);
 		case Condition::CONDITION_FALSE: return false;
 		case Condition::CONDITION_TRUE: return true;
-		case Condition::COUNTER: return evaluateCounter(pCondition);
-		case Condition::FLAG: return evaluateFlag(pCondition);
+		case Condition::COUNTER:
+			return evaluateCounter(pCondition);
+		case Condition::COUNTER_COMPARE_COUNTER:
+			return evaluateCounterPair(pCondition);
+		case Condition::FLAG:
+			return evaluateFlag(pCondition);
 		case Condition::TIMER_EXPIRED: return evaluateTimer(pCondition);
 	}
 }

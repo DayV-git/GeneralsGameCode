@@ -860,121 +860,122 @@ class Condition : public MemoryPoolObject  // This is the conditional class.
 // friend bad for MPOs. (srj)
 //friend class EditCondition;
 public:
-	enum ConditionType 
+	enum ConditionType
 	{
-		CONDITION_FALSE,										// Always evaluates to false.
-		COUNTER,															// COUNTER, COMPARISON, INT
-		FLAG,																	// FLAG BOOLEAN compares flag to value.
-		CONDITION_TRUE,												// Always evaluates to true.
-		TIMER_EXPIRED,												// If a timer expired.
-		PLAYER_ALL_DESTROYED,									// If a side (player) is totally destroyed.
-		PLAYER_ALL_BUILDFACILITIES_DESTROYED, // If a side (player) has all build facilities destroyed.
-		TEAM_INSIDE_AREA_PARTIALLY,						// If a player has units from a team entering an area.		
-		TEAM_DESTROYED,												// If a team has been destroyed.
-		CAMERA_MOVEMENT_FINISHED,							// If the camera has completed it's current movement.
-		TEAM_HAS_UNITS,												// If a team has units.
-		TEAM_STATE_IS,												// If a team is in a particular state.
-		TEAM_STATE_IS_NOT,										// If a team is not in a particular state.
-		NAMED_INSIDE_AREA,										// If a player has units inside an area.
-		NAMED_OUTSIDE_AREA,										// If a player has units outside an area.
-		NAMED_DESTROYED,											// If a unit is destroyed
-		NAMED_NOT_DESTROYED,									// If a unit is destroyed
-		TEAM_INSIDE_AREA_ENTIRELY,						// If a team is entirely inside an area.
-		TEAM_OUTSIDE_AREA_ENTIRELY,						// If a team is entirely outside an area.
-		NAMED_ATTACKED_BY_OBJECTTYPE,					// If a unit has been attacked by an object of type objecttype
-		TEAM_ATTACKED_BY_OBJECTTYPE,					// If a team has been attacked by an object of type objecttype
-		NAMED_ATTACKED_BY_PLAYER,							// If a unit has been attacked by a unit controlled by player
-		TEAM_ATTACKED_BY_PLAYER,							// If a team has been attacked by a unit controlled by player
-		BUILT_BY_PLAYER,											// If a unit of type objecttype has been built by player
-		NAMED_CREATED,												// If a unit is currently in existence 
-		TEAM_CREATED,													// If a team is currently in existence
-		PLAYER_HAS_CREDITS,										// If X [Less Than | Equal | More than] Players credits
-		NAMED_DISCOVERED,											// If a named unit is currently "seen" by a player.
-		TEAM_DISCOVERED,											// If a unit in a team is currently "seen" by a player.
-		MISSION_ATTEMPTS,							// Impl JKMCD
-		NAMED_OWNED_BY_PLAYER,								// If a unit is currently owned by a player
-		TEAM_OWNED_BY_PLAYER,									// If a team is currently owned by a player
-		PLAYER_HAS_N_OR_FEWER_BUILDINGS,			// If a player has count or fewer buildings
-		PLAYER_HAS_POWER,											// If a player currently has power to his facilities 
-		NAMED_REACHED_WAYPOINTS_END,					// If a unit has reached the end of the path that contains Waypoint
-		TEAM_REACHED_WAYPOINTS_END,						// If a team has reached the end of the path that contains Waypoint
-		NAMED_SELECTED,												// If a unit is selected
-		NAMED_ENTERED_AREA,										// If a unit enters an area
-		NAMED_EXITED_AREA,										// If a unit exits an area
-		TEAM_ENTERED_AREA_ENTIRELY,						// If a team has entirely entered an area
-		TEAM_ENTERED_AREA_PARTIALLY,					// If a team has exactly one unit entering an area
-		TEAM_EXITED_AREA_ENTIRELY,						// If a team has entirely exited an area
-		TEAM_EXITED_AREA_PARTIALLY,						// If a team has exactly one unit exiting an area
-		MULTIPLAYER_ALLIED_VICTORY,						// If a single group of allies has vanquished everyone else
-		MULTIPLAYER_ALLIED_DEFEAT,						// If a single group of allies has been vanquished
-		MULTIPLAYER_PLAYER_DEFEAT,						// If a player (but not necessarily his allies) has been defeated
-		PLAYER_HAS_NO_POWER,									// If a player doesn't have power
-		HAS_FINISHED_VIDEO,										// If a video has completed playing
-		HAS_FINISHED_SPEECH,									// If a speech has completed playing
-		HAS_FINISHED_AUDIO,										// If an audio piece has completed playing
-		BUILDING_ENTERED_BY_PLAYER,						// If a player has garrisoned a building.
-		ENEMY_SIGHTED,												// If a unit sees any type of unit/building belonging to a player.
-		UNIT_HEALTH,													// Compares the unit health
-		BRIDGE_REPAIRED,											// If a bridge has been repaired.
-		BRIDGE_BROKEN,												// If a bridge has been broken.
-		NAMED_DYING,													// A unit has been killed, but is in the process of dying (using slow death state)
-		NAMED_TOTALLY_DEAD,										// A unit is done dying.
-		PLAYER_HAS_OBJECT_COMPARISON,					// Does a player have more/less than X number of units of type object
-		OBSOLETE_SCRIPT_1,										// Obsolete!
-		OBSOLETE_SCRIPT_2,										// Obsolete!
-		PLAYER_TRIGGERED_SPECIAL_POWER,				// has a player triggered a specific special power type
-		PLAYER_COMPLETED_SPECIAL_POWER,				// has a player's special power completed?
-		PLAYER_MIDWAY_SPECIAL_POWER,					// If the special power is midway through activation
-		PLAYER_TRIGGERED_SPECIAL_POWER_FROM_NAMED,	// has a player triggered a specific special power type
-		PLAYER_COMPLETED_SPECIAL_POWER_FROM_NAMED,	// has a player's special power completed?
-		PLAYER_MIDWAY_SPECIAL_POWER_FROM_NAMED,			// If the special power is midway through activation
-		DEFUNCT_PLAYER_SELECTED_GENERAL,							// no longer in use!
-		DEFUNCT_PLAYER_SELECTED_GENERAL_FROM_NAMED,		// no longer in use!
-		PLAYER_BUILT_UPGRADE,									// If a player built a specific upgrade
-		PLAYER_BUILT_UPGRADE_FROM_NAMED,			// If a player built a specific upgrade from a specific building
-		PLAYER_DESTROYED_N_BUILDINGS_PLAYER,	// If a player has destroyed N or more buildings of a specific player
-		UNIT_COMPLETED_SEQUENTIAL_EXECUTION,	// If a unit has completed sequential execution
-		TEAM_COMPLETED_SEQUENTIAL_EXECUTION,	// If a team has completed sequential execution
+		CONDITION_FALSE,								 // Always evaluates to false.
+		COUNTER,										 // COUNTER, COMPARISON, INT
+		COUNTER_COMPARE_COUNTER,						 // COUNTER, COMPARISON, COUNTER
+		FLAG,											 // FLAG BOOLEAN compares flag to value.
+		CONDITION_TRUE,									 // Always evaluates to true.
+		TIMER_EXPIRED,									 // If a timer expired.
+		PLAYER_ALL_DESTROYED,							 // If a side (player) is totally destroyed.
+		PLAYER_ALL_BUILDFACILITIES_DESTROYED,			 // If a side (player) has all build facilities destroyed.
+		TEAM_INSIDE_AREA_PARTIALLY,						 // If a player has units from a team entering an area.
+		TEAM_DESTROYED,									 // If a team has been destroyed.
+		CAMERA_MOVEMENT_FINISHED,						 // If the camera has completed it's current movement.
+		TEAM_HAS_UNITS,									 // If a team has units.
+		TEAM_STATE_IS,									 // If a team is in a particular state.
+		TEAM_STATE_IS_NOT,								 // If a team is not in a particular state.
+		NAMED_INSIDE_AREA,								 // If a player has units inside an area.
+		NAMED_OUTSIDE_AREA,								 // If a player has units outside an area.
+		NAMED_DESTROYED,								 // If a unit is destroyed
+		NAMED_NOT_DESTROYED,							 // If a unit is destroyed
+		TEAM_INSIDE_AREA_ENTIRELY,						 // If a team is entirely inside an area.
+		TEAM_OUTSIDE_AREA_ENTIRELY,						 // If a team is entirely outside an area.
+		NAMED_ATTACKED_BY_OBJECTTYPE,					 // If a unit has been attacked by an object of type objecttype
+		TEAM_ATTACKED_BY_OBJECTTYPE,					 // If a team has been attacked by an object of type objecttype
+		NAMED_ATTACKED_BY_PLAYER,						 // If a unit has been attacked by a unit controlled by player
+		TEAM_ATTACKED_BY_PLAYER,						 // If a team has been attacked by a unit controlled by player
+		BUILT_BY_PLAYER,								 // If a unit of type objecttype has been built by player
+		NAMED_CREATED,									 // If a unit is currently in existence
+		TEAM_CREATED,									 // If a team is currently in existence
+		PLAYER_HAS_CREDITS,								 // If X [Less Than | Equal | More than] Players credits
+		NAMED_DISCOVERED,								 // If a named unit is currently "seen" by a player.
+		TEAM_DISCOVERED,								 // If a unit in a team is currently "seen" by a player.
+		MISSION_ATTEMPTS,								 // Impl JKMCD
+		NAMED_OWNED_BY_PLAYER,							 // If a unit is currently owned by a player
+		TEAM_OWNED_BY_PLAYER,							 // If a team is currently owned by a player
+		PLAYER_HAS_N_OR_FEWER_BUILDINGS,				 // If a player has count or fewer buildings
+		PLAYER_HAS_POWER,								 // If a player currently has power to his facilities
+		NAMED_REACHED_WAYPOINTS_END,					 // If a unit has reached the end of the path that contains Waypoint
+		TEAM_REACHED_WAYPOINTS_END,						 // If a team has reached the end of the path that contains Waypoint
+		NAMED_SELECTED,									 // If a unit is selected
+		NAMED_ENTERED_AREA,								 // If a unit enters an area
+		NAMED_EXITED_AREA,								 // If a unit exits an area
+		TEAM_ENTERED_AREA_ENTIRELY,						 // If a team has entirely entered an area
+		TEAM_ENTERED_AREA_PARTIALLY,					 // If a team has exactly one unit entering an area
+		TEAM_EXITED_AREA_ENTIRELY,						 // If a team has entirely exited an area
+		TEAM_EXITED_AREA_PARTIALLY,						 // If a team has exactly one unit exiting an area
+		MULTIPLAYER_ALLIED_VICTORY,						 // If a single group of allies has vanquished everyone else
+		MULTIPLAYER_ALLIED_DEFEAT,						 // If a single group of allies has been vanquished
+		MULTIPLAYER_PLAYER_DEFEAT,						 // If a player (but not necessarily his allies) has been defeated
+		PLAYER_HAS_NO_POWER,							 // If a player doesn't have power
+		HAS_FINISHED_VIDEO,								 // If a video has completed playing
+		HAS_FINISHED_SPEECH,							 // If a speech has completed playing
+		HAS_FINISHED_AUDIO,								 // If an audio piece has completed playing
+		BUILDING_ENTERED_BY_PLAYER,						 // If a player has garrisoned a building.
+		ENEMY_SIGHTED,									 // If a unit sees any type of unit/building belonging to a player.
+		UNIT_HEALTH,									 // Compares the unit health
+		BRIDGE_REPAIRED,								 // If a bridge has been repaired.
+		BRIDGE_BROKEN,									 // If a bridge has been broken.
+		NAMED_DYING,									 // A unit has been killed, but is in the process of dying (using slow death state)
+		NAMED_TOTALLY_DEAD,								 // A unit is done dying.
+		PLAYER_HAS_OBJECT_COMPARISON,					 // Does a player have more/less than X number of units of type object
+		OBSOLETE_SCRIPT_1,								 // Obsolete!
+		OBSOLETE_SCRIPT_2,								 // Obsolete!
+		PLAYER_TRIGGERED_SPECIAL_POWER,					 // has a player triggered a specific special power type
+		PLAYER_COMPLETED_SPECIAL_POWER,					 // has a player's special power completed?
+		PLAYER_MIDWAY_SPECIAL_POWER,					 // If the special power is midway through activation
+		PLAYER_TRIGGERED_SPECIAL_POWER_FROM_NAMED,		 // has a player triggered a specific special power type
+		PLAYER_COMPLETED_SPECIAL_POWER_FROM_NAMED,		 // has a player's special power completed?
+		PLAYER_MIDWAY_SPECIAL_POWER_FROM_NAMED,			 // If the special power is midway through activation
+		DEFUNCT_PLAYER_SELECTED_GENERAL,				 // no longer in use!
+		DEFUNCT_PLAYER_SELECTED_GENERAL_FROM_NAMED,		 // no longer in use!
+		PLAYER_BUILT_UPGRADE,							 // If a player built a specific upgrade
+		PLAYER_BUILT_UPGRADE_FROM_NAMED,				 // If a player built a specific upgrade from a specific building
+		PLAYER_DESTROYED_N_BUILDINGS_PLAYER,			 // If a player has destroyed N or more buildings of a specific player
+		UNIT_COMPLETED_SEQUENTIAL_EXECUTION,			 // If a unit has completed sequential execution
+		TEAM_COMPLETED_SEQUENTIAL_EXECUTION,			 // If a team has completed sequential execution
 		PLAYER_HAS_COMPARISON_UNIT_TYPE_IN_TRIGGER_AREA, // If player has a specific unit or building type...
 		PLAYER_HAS_COMPARISON_UNIT_KIND_IN_TRIGGER_AREA, // If player has a kindof in a trigger area.
-		UNIT_EMPTIED,													// True if a unit has just emptied its cargo
-		TYPE_SIGHTED,														// True if a specific unit has just seen a type of unit belonging to a specific player
-		NAMED_BUILDING_IS_EMPTY,								// True if a specific building is empty
-		PLAYER_HAS_N_OR_FEWER_FACTION_BUILDINGS,			// If a player has count or fewer faction buildings
-		UNIT_HAS_OBJECT_STATUS,									// True if an object has that object status bit set to true
-		TEAM_ALL_HAS_OBJECT_STATUS,							// True if all objects on a team have that object status bit set to true
-		TEAM_SOME_HAVE_OBJECT_STATUS,						// True if an object on the team has that object status bit set to true
-		PLAYER_POWER_COMPARE_PERCENT,						// True if a player's power ratio compares to a percentage.
-		PLAYER_EXCESS_POWER_COMPARE_VALUE,			// True if a player has comparison  power in kilowatts.
-		SKIRMISH_SPECIAL_POWER_READY,						// True if the special power is ready to fire.
-		SKIRMISH_VALUE_IN_AREA,									// True if the units in an area are worth comparison to a value
-		SKIRMISH_PLAYER_FACTION,								// True if player is a specific faction
-		SKIRMISH_SUPPLIES_VALUE_WITHIN_DISTANCE,// True if there are supplies within distance of the perimeter
-		SKIRMISH_TECH_BUILDING_WITHIN_DISTANCE,	// True if there is a tech building within distance of the perimeter
-		SKIRMISH_COMMAND_BUTTON_READY_ALL,			// True when ???
-		SKIRMISH_COMMAND_BUTTON_READY_PARTIAL,	// True when ???
-		SKIRMISH_UNOWNED_FACTION_UNIT_EXISTS,		// True if there are comparison to unowned faction unit on the map.
-		SKIRMISH_PLAYER_HAS_PREREQUISITE_TO_BUILD,	// True if we can build this thing (we have prerequisites)
-		SKIRMISH_PLAYER_HAS_COMPARISON_GARRISONED,	// True if there are comparison to garrisoned buildings (by player) on the map
-		SKIRMISH_PLAYER_HAS_COMPARISON_CAPTURED_UNITS,	// True if there are comparison to captured units 
-		SKIRMISH_NAMED_AREA_EXIST,							// True if a named area exists
-		SKIRMISH_PLAYER_HAS_UNITS_IN_AREA,			// True if a player has units in an area
-		SKIRMISH_PLAYER_HAS_BEEN_ATTACKED_BY_PLAYER,	// True if the player has been attacked by a player
-		SKIRMISH_PLAYER_IS_OUTSIDE_AREA,				// True if player doesn't have any units in an area
-		SKIRMISH_PLAYER_HAS_DISCOVERED_PLAYER,	// True if a player has discovered another player
+		UNIT_EMPTIED,									 // True if a unit has just emptied its cargo
+		TYPE_SIGHTED,									 // True if a specific unit has just seen a type of unit belonging to a specific player
+		NAMED_BUILDING_IS_EMPTY,						 // True if a specific building is empty
+		PLAYER_HAS_N_OR_FEWER_FACTION_BUILDINGS,		 // If a player has count or fewer faction buildings
+		UNIT_HAS_OBJECT_STATUS,							 // True if an object has that object status bit set to true
+		TEAM_ALL_HAS_OBJECT_STATUS,						 // True if all objects on a team have that object status bit set to true
+		TEAM_SOME_HAVE_OBJECT_STATUS,					 // True if an object on the team has that object status bit set to true
+		PLAYER_POWER_COMPARE_PERCENT,					 // True if a player's power ratio compares to a percentage.
+		PLAYER_EXCESS_POWER_COMPARE_VALUE,				 // True if a player has comparison  power in kilowatts.
+		SKIRMISH_SPECIAL_POWER_READY,					 // True if the special power is ready to fire.
+		SKIRMISH_VALUE_IN_AREA,							 // True if the units in an area are worth comparison to a value
+		SKIRMISH_PLAYER_FACTION,						 // True if player is a specific faction
+		SKIRMISH_SUPPLIES_VALUE_WITHIN_DISTANCE,		 // True if there are supplies within distance of the perimeter
+		SKIRMISH_TECH_BUILDING_WITHIN_DISTANCE,			 // True if there is a tech building within distance of the perimeter
+		SKIRMISH_COMMAND_BUTTON_READY_ALL,				 // True when ???
+		SKIRMISH_COMMAND_BUTTON_READY_PARTIAL,			 // True when ???
+		SKIRMISH_UNOWNED_FACTION_UNIT_EXISTS,			 // True if there are comparison to unowned faction unit on the map.
+		SKIRMISH_PLAYER_HAS_PREREQUISITE_TO_BUILD,		 // True if we can build this thing (we have prerequisites)
+		SKIRMISH_PLAYER_HAS_COMPARISON_GARRISONED,		 // True if there are comparison to garrisoned buildings (by player) on the map
+		SKIRMISH_PLAYER_HAS_COMPARISON_CAPTURED_UNITS,	 // True if there are comparison to captured units
+		SKIRMISH_NAMED_AREA_EXIST,						 // True if a named area exists
+		SKIRMISH_PLAYER_HAS_UNITS_IN_AREA,				 // True if a player has units in an area
+		SKIRMISH_PLAYER_HAS_BEEN_ATTACKED_BY_PLAYER,	 // True if the player has been attacked by a player
+		SKIRMISH_PLAYER_IS_OUTSIDE_AREA,				 // True if player doesn't have any units in an area
+		SKIRMISH_PLAYER_HAS_DISCOVERED_PLAYER,			 // True if a player has discovered another player
 
-		PLAYER_ACQUIRED_SCIENCE,								// True if the player has acquired the specified Science.
-		PLAYER_HAS_SCIENCEPURCHASEPOINTS,				// True if the player has at least N SciencePurchasePoints.
-		PLAYER_CAN_PURCHASE_SCIENCE,						// True is player can purchase the given science (has all prereqs & points needed)
-		MUSIC_TRACK_HAS_COMPLETED,							// True if the specified track has completed at least N times
-		PLAYER_LOST_OBJECT_TYPE,								// True if a player has lost a specific unit type
-		
-		SUPPLY_SOURCE_SAFE,											// True if the nearest available supply source is not under enemy influence.
-		SUPPLY_SOURCE_ATTACKED,									// True if our supply depot or dozer near depot was attacked.
-		START_POSITION_IS,											// True if our start position matches.
-		NAMED_HAS_FREE_CONTAINER_SLOTS,					///< Kris -- Checks if any given container has any free slots.
+		PLAYER_ACQUIRED_SCIENCE,		  // True if the player has acquired the specified Science.
+		PLAYER_HAS_SCIENCEPURCHASEPOINTS, // True if the player has at least N SciencePurchasePoints.
+		PLAYER_CAN_PURCHASE_SCIENCE,	  // True is player can purchase the given science (has all prereqs & points needed)
+		MUSIC_TRACK_HAS_COMPLETED,		  // True if the specified track has completed at least N times
+		PLAYER_LOST_OBJECT_TYPE,		  // True if a player has lost a specific unit type
 
-		NUM_ITEMS		 // Always the last condition.
+		SUPPLY_SOURCE_SAFE,				// True if the nearest available supply source is not under enemy influence.
+		SUPPLY_SOURCE_ATTACKED,			// True if our supply depot or dozer near depot was attacked.
+		START_POSITION_IS,				// True if our start position matches.
+		NAMED_HAS_FREE_CONTAINER_SLOTS, ///< Kris -- Checks if any given container has any free slots.
+
+		NUM_ITEMS // Always the last condition.
 	};
 
 	Condition(enum ConditionType type); 

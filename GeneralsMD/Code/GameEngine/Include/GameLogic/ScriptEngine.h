@@ -391,7 +391,10 @@ protected:
 	void disableScript( ScriptAction *pAction );
 	void callSubroutine( ScriptAction *pAction );
 	void checkConditionsForTeamNames(Script *pScript);
-	Bool evaluateCounter( Condition *pCondition );
+	Int getOrAllocateCounter(Condition *pCondition, int paramIndex);
+	Bool compareValues(Int left, Int right, Int comparisonOp);
+	Bool evaluateCounter(Condition *pCondition);
+	Bool evaluateCounterPair(Condition *pCondition);
 	Bool evaluateFlag( Condition *pCondition );
 	Bool evaluateTimer( Condition *pCondition );
 	Bool evaluateCondition( Condition *pCondition );
