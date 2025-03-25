@@ -253,7 +253,8 @@ void TeamIdentity::loadUnitsInfo(int idcMinUnit, NameKeyType keyMinUnit,
 
 		// next tier uses the editor sorting bits that design can specify in the INI
 		EditorSortingType sort = tTemplate->getEditorSorting();
-		if (( sort != ES_VEHICLE ) && (sort != ES_INFANTRY)) continue;
+		if ((sort != ES_VEHICLE) && (sort != ES_INFANTRY) && (sort != ES_STRUCTURE))
+			continue;
 
 		Int ndx = pCombo->AddString(tTemplate->getName().str());
 		if (type == tTemplate->getName()) {
@@ -437,6 +438,7 @@ void TeamIdentity::OnUnitTypeButton(Int idcUnitType)
 	PickUnitDialog dlg;
 	dlg.SetAllowableType(ES_VEHICLE);
 	dlg.SetAllowableType(ES_INFANTRY);
+	dlg.SetAllowableType(ES_STRUCTURE);
 	if (dlg.DoModal() == IDOK) {
 		AsciiString unit = dlg.getPickedUnit();
 		NameKeyType keyUnitType;
