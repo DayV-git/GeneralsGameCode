@@ -6348,7 +6348,7 @@ Script  *ScriptEngine::findScript(const AsciiString& name)
 //-------------------------------------------------------------------------------------------------
 /** Retrieves an existing counter index or allocates a new one if necessary, from script condtion. */
 //-------------------------------------------------------------------------------------------------
-Int ScriptEngine::getOrAllocateCounter(Condition *pCondition, int paramIndex)
+Int ScriptEngine::getOrAllocateCounter(Condition *pCondition, Int paramIndex)
 {
 	Int counterNdx = pCondition->getParameter(paramIndex)->getInt();
 	if (counterNdx == 0)
