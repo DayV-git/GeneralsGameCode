@@ -860,10 +860,11 @@ class Condition : public MemoryPoolObject  // This is the conditional class.
 // friend bad for MPOs. (srj)
 //friend class EditCondition;
 public:
-	enum ConditionType 
+	enum ConditionType
 	{
 		CONDITION_FALSE,										// Always evaluates to false.
 		COUNTER,															// COUNTER, COMPARISON, INT
+		COUNTER_COMPARE_COUNTER,						                    // COUNTER, COMPARISON, COUNTER
 		FLAG,																	// FLAG BOOLEAN compares flag to value.
 		CONDITION_TRUE,												// Always evaluates to true.
 		TIMER_EXPIRED,												// If a timer expired.
